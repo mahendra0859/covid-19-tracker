@@ -1,11 +1,28 @@
 import React from "react";
-import "./styles.css";
 
-export default function App() {
-  return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-    </div>
-  );
+import { Cards, Chart, CountryPicker } from "./components";
+import styles from "./App.module.css";
+import { fetchData } from "./api/index";
+
+class App extends React.Component {
+  state = {
+    data: {}
+  };
+  async componentDidMount() {
+    const fetchedData = await fetchData();
+    this.setState({ data: fetchedData });
+    console.log("this", this.state);
+  }
+  render() {
+    const { data } = this.state;
+    return (
+      <div className={styles.container}>
+        <Cards data={data} />
+        <CountryPicker />
+        <Chart />
+      </div>
+    );
+  }
 }
+
+export default App;
